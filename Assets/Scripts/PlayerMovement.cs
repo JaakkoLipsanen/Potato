@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rigidbody;
 
+
     public KeyCode Forward = KeyCode.W;
     public KeyCode Backwards = KeyCode.S;
     public KeyCode RotateLeft = KeyCode.A;
@@ -25,6 +26,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+
+        if(!GameManager.Instance.CanPlayerMove) 
+        {
+            rigidbody.AddForce(-rigidbody.velocity * Time.deltaTime);
+            return; 
+        }
+
         if(Input.GetKey(Forward))
         {
             rigidbody.AddForce(transform.up * FORCE_PER_SECOND * Time.deltaTime * Speed);

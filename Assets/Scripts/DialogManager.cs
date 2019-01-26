@@ -15,7 +15,7 @@ public class Dialog
     public DialogPiece[] DialogPieces;
 
     public DialogPiece CurrentDialog { get { return DialogPieces[index]; } }
-    public bool HasNext {  get { return DialogPieces.Length < index + 1;  } }
+    public bool HasNext {  get { return DialogPieces.Length > index + 1;  } }
     public void MoveToNext()
     {
         if(HasNext)
@@ -34,9 +34,14 @@ public class DialogManager : MonoBehaviour
         get { return this.GetComponentInChildren<Canvas>(); }
     }
 
-    public Text Text
+    public Text DialogText
     {
-        get { return this.GetComponentInChildren<Text>(); }
+        get { return GameObject.Find("DialogText").GetComponentInChildren<Text>(); }
+    }
+
+    public Text SpeakerNameText
+    {
+        get { return GameObject.Find("SpeakerName").GetComponentInChildren<Text>(); }
     }
 
     public float DialogProgress = 0;
@@ -51,26 +56,40 @@ public class DialogManager : MonoBehaviour
     void LateUpdate()
     {
         this.Canvas.enabled = true;
-        this.Text.text = "";
+        this.DialogText.text = "";
+        this.SpeakerNameText.text = "";
         if (this.ActiveDialog != null)
         {
-            this.Text.text = this.ActiveDialog.CurrentDialog.Text.Substring(0, Mathf.Max(1, Mathf.RoundToInt(this.ActiveDialog.CurrentDialog.Text.Length * this.DialogProgress) - 1));
+            Debug.Log("active");
+            this.SpeakerNameText.text = this.ActiveDialog.CurrentDialog.Person;
+            this.DialogText.text = this.ActiveDialog.CurrentDialog.Text.Substring(0, Mathf.Max(1, Mathf.RoundToInt(this.ActiveDialog.CurrentDialog.Text.Length * this.DialogProgress) - 1));
             if(this.DialogProgress >= 1)
             {
-                if(this.ActiveDialog.HasNext && Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    this.ActiveDialog.MoveToNext();
-                    this.DialogProgress = 0;
+                    if (this.ActiveDialog.HasNext)
+                    {
+                        this.ActiveDialog.MoveToNext();
+                        this.DialogProgress = 0;
+                    }
+                    else
+                    {
+                        this.ActiveDialog = null;
+                    }
                 }
-                else
-                {
-                    this.ActiveDialog = null;
-                }
+            }
+
+
+            if (this.ActiveDialog != null)
+            {
+                var deltaMultiplier = 25 / (float)this.ActiveDialog.CurrentDialog.Text.Length;
+                this.DialogProgress = Mathf.Min(1, this.DialogProgress + Time.deltaTime * deltaMultiplier);
             }
         }
         else if(this.playerDialog.startableDialog != null)
         {
-            this.Text.text = "Press F to start conversation";
+            Debug.Log("player");
+            this.DialogText.text = "Press F to start conversation";
             if (Input.GetKeyDown(KeyCode.F))
             {
                 this.StartDialog(this.playerDialog.startableDialog.dialog);
@@ -80,8 +99,5 @@ public class DialogManager : MonoBehaviour
         {
             this.Canvas.enabled = false;
         }
-
-
-        this.DialogProgress = Mathf.Min(1, this.DialogProgress + Time.deltaTime);
     }
 }
