@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,10 +24,14 @@ public class Dialog
             index++;
         }
     }
+
+    public Action OnDone;
 }
 
 public class DialogManager : MonoBehaviour
 {
+    public static DialogManager Instance;
+
     public PlayerDialog playerDialog;
     public Dialog ActiveDialog;
     public Canvas Canvas
@@ -46,6 +51,10 @@ public class DialogManager : MonoBehaviour
 
     public float DialogProgress = 0;
 
+    public DialogManager()
+    {
+        Instance = this;
+    }
 
     public void StartDialog(Dialog dialog)
     {
@@ -60,9 +69,8 @@ public class DialogManager : MonoBehaviour
         this.SpeakerNameText.text = "";
         if (this.ActiveDialog != null)
         {
-            Debug.Log("active");
             this.SpeakerNameText.text = this.ActiveDialog.CurrentDialog.Person;
-            this.DialogText.text = this.ActiveDialog.CurrentDialog.Text.Substring(0, Mathf.Max(1, Mathf.RoundToInt(this.ActiveDialog.CurrentDialog.Text.Length * this.DialogProgress) - 1));
+            this.DialogText.text = this.ActiveDialog.CurrentDialog.Text.Substring(0, Mathf.Max(1, Mathf.RoundToInt(this.ActiveDialog.CurrentDialog.Text.Length * this.DialogProgress)));
             if(this.DialogProgress >= 1)
             {
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -74,6 +82,7 @@ public class DialogManager : MonoBehaviour
                     }
                     else
                     {
+                        this.ActiveDialog.OnDone?.Invoke();
                         this.ActiveDialog = null;
                     }
                 }
@@ -86,7 +95,7 @@ public class DialogManager : MonoBehaviour
                 this.DialogProgress = Mathf.Min(1, this.DialogProgress + Time.deltaTime * deltaMultiplier);
             }
         }
-        else if(this.playerDialog.startableDialog != null)
+        else if(this.playerDialog.startableDialog != null && GameManager.Instance.CanPlayerMove)
         {
             Debug.Log("player");
             this.DialogText.text = "Press F to start conversation";

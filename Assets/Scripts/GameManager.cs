@@ -3,7 +3,8 @@
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public bool CanPlayerMove { get { return !IsDialogActive; } }
+    public bool CanPlayerMove { get { return !IsDialogActive && !IsStartupPhaseActive; } }
+    public bool IsStartupPhaseActive { get; set; }
     public bool IsDialogActive
     {
         get
