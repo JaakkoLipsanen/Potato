@@ -1,18 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DialogStarter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Dialog dialog = new Dialog 
+    { 
+        DialogPieces = new DialogPiece[] { new DialogPiece { Person = "Sarah", Text = "Oh Jaakko you're so brave!" } }
+    };
 }
