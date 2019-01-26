@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode Backwards = KeyCode.S;
     public KeyCode RotateLeft = KeyCode.A;
     public KeyCode RotateRight = KeyCode.D;
+    public float Speed = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +27,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetKey(Forward))
         {
-            rigidbody.AddForce(transform.up * FORCE_PER_SECOND * Time.deltaTime);
+            rigidbody.AddForce(transform.up * FORCE_PER_SECOND * Time.deltaTime * Speed);
         }
 
         if (Input.GetKey(Backwards))
         {
-            rigidbody.AddForce(transform.up * -FORCE_PER_SECOND * Time.deltaTime);
+            rigidbody.AddForce(transform.up * -FORCE_PER_SECOND * Time.deltaTime * Speed);
         }
 
         if (Input.GetKey(RotateLeft))
