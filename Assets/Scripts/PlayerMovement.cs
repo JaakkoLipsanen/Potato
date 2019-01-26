@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     const float ROTATION_PER_SECOND = 150;
     const float FORCE_PER_SECOND = 500;
