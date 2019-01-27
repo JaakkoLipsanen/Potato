@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         _timeSinceStart += Time.deltaTime;
         _timeSinceLastSpawn += Time.deltaTime;
 
-        var currentRateOfSpawn = Mathf.Lerp(2f, 0.4f, Mathf.Min(1, _timeSinceStart / 180f));
+        var currentRateOfSpawn = Mathf.Lerp(3f, 0.6f, Mathf.Min(1, _timeSinceStart / 2400f));
         if (_timeSinceLastSpawn > currentRateOfSpawn)
         {
             _timeSinceLastSpawn = 0;
@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour
         Instantiate(AnttiAlienPrefab, antti.transform.position, Quaternion.identity);
         Destroy(antti);
 
-        Debug.Log("Start end dialog");
         DialogManager.Instance.StartDialog(new Dialog
         {
             DialogPieces = new DialogPiece[]
@@ -74,7 +73,16 @@ public class GameManager : MonoBehaviour
                 new DialogPiece { Person = "Antti Alien", Text = "I told you that you should leave!" },
                 new DialogPiece { Person = "Antti Alien", Text = "You will die now human scum!" }
             },
-            OnDone = () => { GameObject.Find("LivesRemainingText").SetActive(true); this.IsActualGameStarted = true; }
+            OnDone = () => { 
+                GameObject.Find("LivesRemainingText").SetActive(true); 
+                this.IsActualGameStarted = true;
+                GameObject.Find("LivesRemainingText").GetComponent<UnityEngine.UI.Text>().text = "Lives remaining: 10";
+                GameObject.Find("KillsText").GetComponent<UnityEngine.UI.Text>().text = "Kills: 0";
+                foreach(var go in GameObject.FindGameObjectsWithTag("prop"))
+                {
+                    go.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                }
+            }
         });
     }
 }

@@ -47,5 +47,6 @@ public class Enemy : MonoBehaviour
             GameObject.Find("KillsText").GetComponent<UnityEngine.UI.Text>().text = "Kills: " + ++kills;
         }
         Destroy(this.GetComponent<Rigidbody2D>());
+        Destroy(this.GetComponent<BoxCollider2D>());
     }
 }

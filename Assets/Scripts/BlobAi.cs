@@ -17,5 +17,6 @@ public class BlobAi : MonoBehaviour
         var dist = Vector3.Distance(this.Player.transform.position, this.transform.position);
 
         this.transform.position = Vector3.Lerp(this.transform.position, this.Player.transform.position, speed * Time.deltaTime / dist);
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0.1f);
     }
 }

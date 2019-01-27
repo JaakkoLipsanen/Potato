@@ -10,7 +10,7 @@ public class PlayerShooting : MonoBehaviour
     public int Lives = 10;
     void Update()
     {
-        if(!GameManager.Instance.CanPlayerMove)
+        if(!GameManager.Instance.CanPlayerMove || !GameManager.Instance.IsActualGameStarted)
         {
             return;
         }
@@ -36,7 +36,6 @@ public class PlayerShooting : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        Debug.Log("COLLISION");
         var enemy = collision.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
@@ -51,7 +50,7 @@ public class PlayerShooting : MonoBehaviour
 
             if (Lives == 0)
             {
-                GameObject.Find("GameOverText").active = true;
+                GameObject.Find("GameOverText").GetComponent<UnityEngine.UI.Text>().text = "GAME OVER! Refresh the site to play again";
             }
 
         }
