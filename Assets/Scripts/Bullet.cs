@@ -24,6 +24,7 @@ public class Bullet : MonoBehaviour
             x.TakeHit();
         }
 
+
         Destroy(this.gameObject);
     }
 }

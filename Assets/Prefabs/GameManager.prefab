@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0dfc155c9cb4fb3ab8274dddecd1dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsDialogActive: 0
+  AnttiAlienPrefab: {fileID: 1924760665735336295, guid: 5e47ba7b9b3b34339ab386974463f64c,
+    type: 3}
+  IsActualGameStarted: 0
+  BlobPrefab: {fileID: 724007846596369902, guid: 579508babe84e49c1876f1ba11449447,
+    type: 3}

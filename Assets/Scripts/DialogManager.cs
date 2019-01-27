@@ -54,6 +54,7 @@ public class DialogManager : MonoBehaviour
         get { return GameObject.Find("SpeakerName").GetComponentInChildren<Text>(); }
     }
 
+    private bool _dirty = false;
     public float DialogProgress = 0;
 
     public DialogManager()
@@ -66,6 +67,8 @@ public class DialogManager : MonoBehaviour
         this.ActiveDialog = dialog;
         this.DialogProgress = 0;
         this.ActiveDialog.Reset();
+
+        _dirty = true;
     }
 
     void LateUpdate()
@@ -93,10 +96,18 @@ public class DialogManager : MonoBehaviour
                     }
                     else
                     {
+                        _dirty = false;
+                        var oldDialog = this.ActiveDialog;
                         this.ActiveDialog.OnDone?.Invoke();
-                        this.ActiveDialog = null;
+                        if (!_dirty)
+                        {
+                            this.ActiveDialog = null;
+                        }
                     }
                 }
+            } else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                this.DialogProgress = 1;
             }
 
 
@@ -108,7 +119,6 @@ public class DialogManager : MonoBehaviour
         }
         else if(this.playerDialog.startableDialog != null && GameManager.Instance.CanPlayerMove)
         {
-            Debug.Log("player");
             this.DialogText.text = "Press F to start conversation";
             if (Input.GetKeyDown(KeyCode.F))
             {

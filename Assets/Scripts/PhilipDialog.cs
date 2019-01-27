@@ -6,7 +6,6 @@ public class PhilipDialog : MonoBehaviour
 {
     void Start()
     {
-        Debug.Log("Start philipdialog");
         this.GetComponent<DialogStarter>().dialog = new Dialog
         {
             DialogPieces = new DialogPiece[]

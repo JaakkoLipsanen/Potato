@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    static int kills = 0;
     private int _hits;
     public int HowManyBulletsToDie = 2;
     public bool IsDead = false;
@@ -15,14 +16,14 @@ public class Enemy : MonoBehaviour
     {
         if(this.IsDead)
         {
-            _deadTime += Time.deltaTime * 0.6f;
+            _deadTime += Time.deltaTime * 1.4f;
             float colorLerpTime =  _deadTime;
             float scaleLerpTime = _deadTime < 1 ? 0 : _deadTime - 1;
 
-            this.Sprite.color = Color.Lerp(Color.white, new Color(0.7f, 0.5f, 0.3f, 0.6f), _deadTime);
-            this.transform.localScale = Vector3.one * Mathf.SmoothStep(1, 0, scaleLerpTime * 0.5f);
+            this.Sprite.color = Color.Lerp(Color.white, new Color(1, 1, 1, 0.6f), _deadTime);
+            this.transform.localScale = Vector3.one * Mathf.SmoothStep(1, 0, scaleLerpTime);
 
-            if (_deadTime >= 3)
+            if (_deadTime >= 2)
             {
                 Destroy(this.gameObject);
             }
@@ -38,8 +39,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die(bool killedBySelf = true)
     {
         this.IsDead = true;
+        if (killedBySelf)
+        {
+            GameObject.Find("KillsText").GetComponent<UnityEngine.UI.Text>().text = "Kills: " + ++kills;
+        }
+        Destroy(this.GetComponent<Rigidbody2D>());
     }
 }
