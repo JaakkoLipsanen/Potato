@@ -25,6 +25,11 @@ public class Dialog
         }
     }
 
+    public void Reset()
+    {
+        index = 0;
+    }
+
     public Action OnDone;
 }
 
@@ -60,6 +65,7 @@ public class DialogManager : MonoBehaviour
     {
         this.ActiveDialog = dialog;
         this.DialogProgress = 0;
+        this.ActiveDialog.Reset();
     }
 
     void LateUpdate()
@@ -67,6 +73,11 @@ public class DialogManager : MonoBehaviour
         this.Canvas.enabled = true;
         this.DialogText.text = "";
         this.SpeakerNameText.text = "";
+        if (!GameManager.Instance.CanPlayerConversate)
+        {
+            this.Canvas.enabled = false;
+            return;
+        }
         if (this.ActiveDialog != null)
         {
             this.SpeakerNameText.text = this.ActiveDialog.CurrentDialog.Person;

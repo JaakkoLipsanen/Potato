@@ -4,6 +4,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public bool CanPlayerMove { get { return !IsDialogActive && !IsStartupPhaseActive; } }
+    public bool CanPlayerConversate {  get { return !this.IsActualGameStarted; } }
+
     public bool IsStartupPhaseActive { get; set; }
     public bool IsDialogActive
     {
@@ -13,8 +15,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsActualGameStarted = false;
+
     public GameManager()
     {
         Instance = this;
+    }
+
+    public void StartActualGame()
+    {
+        this.IsActualGameStarted = true;
     }
 }
