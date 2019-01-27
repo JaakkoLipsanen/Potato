@@ -30,9 +30,16 @@ public class GameStartManager : MonoBehaviour
     public Vector3[] MovingWendyPath;
     public int MovingBobCurrentIndex = 1;
     public int MovingWendyCurrentIndex = 1;
+    public bool SkipCutscene = false;
 
     void Start()
     {
+        if (SkipCutscene)
+        {
+            Phase = StartPhase.Done;
+            return;
+        }
+
         MovingBobPath = CreatePath(true);
         MovingWendyPath = CreatePath(false);
         GameManager.Instance.IsStartupPhaseActive = true;
